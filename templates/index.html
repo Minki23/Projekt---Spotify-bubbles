@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    button{
+      aspect-ratio: 1;
+      width: 100px;
+      border-radius: 100%;
+      position: absolute;
+    }
+    img{
+      border-radius: 100%;
+      aspect-ratio: 1;
+      width: 100%;
+      pointer-events: none;
+    }
+    .button:hover::after {
+      content: attr(data-artist);
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="cube">
+    {% for img in imgs %}
+      <button class="button" data-artist="{{ img[1] }}">
+        <img src="{{ img[0] }}" alt="Profile Picture">
+      </button>
+    {% endfor %}
+  </div>
+<script src="static/scripts/script.js"></script>
+</body>
+</html>
+
