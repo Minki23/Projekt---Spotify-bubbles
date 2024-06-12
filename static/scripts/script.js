@@ -1,18 +1,18 @@
-let i = 1
+let i = 60
 let squareCenterX = window.innerWidth / 2;
 let squareCenterY = window.innerHeight / 2;
 const cube =  document.querySelector('.cube').getBoundingClientRect();
 class Button{
   constructor(button){
     this.button = button;
-    this.button.style.width = `${Math.floor(i * 100) + 50}px`;
-    i-=0.05
+    this.button.style.width = `${i/10}vw`;
+    i-=1.5
     this.reset()
   }
   reset(){
-    this.gravity = 0.15;
+    this.gravity = 0.1;
     this.friction = .06;
-    this.repelForce = 1;
+    this.repelForce = .6;
     this.velocityX = 0;
     this.velocityY = 0;
   }
@@ -36,7 +36,6 @@ class Button{
       else{
         this.velocityX += this.gravity;
       }
-      
       
       this.velocityX *= 1 - this.friction;
       this.velocityY *= 1 - this.friction;
@@ -71,6 +70,8 @@ class Button{
 }
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
+  button.style.top = `${Math.random() * (cube.height - button.offsetHeight)}px`;
+  button.style.left = `${Math.random() * (cube.width - button.offsetWidth)}px`;
   const newButton = new Button(button);
   newButton.move();
   newButton.button.addEventListener('mousedown', (event) => {
@@ -83,8 +84,7 @@ buttons.forEach((button) => {
       button.style.top = `${event.clientY - offsetY}px`;
       newButton.velocityX = 0;
       newButton.velocityY = 0;
-      newButton.gravityX = 0;
-      newButton.gravityY = 0;
+      newButton.gravity = 0;
       newButton.repelForce = 0;
     };
 

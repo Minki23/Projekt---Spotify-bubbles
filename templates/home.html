@@ -3,10 +3,7 @@
 <head>
   <style>
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      margin: 0;
     }
     button{
       aspect-ratio: 1;
@@ -41,22 +38,44 @@
     }
     .cube {
       position: relative;
-      width: 700px;
-      height: 700px;
+      width: 30vw;
+      height: 30vw;
       background-color: aqua;
-      margin-left: -500px;
       overflow: hidden;
+      margin: 20px;
+    }
+
+    .list{
+      position: relative;
+      right: 0;
+      width: 30vw;
+      max-height: 30vh;
+      height: fit-content;
+      overflow: scroll;
+      background-color: rgb(212, 125, 145);
+    }
+    
+    .content{
+      display: flex;
+      align-items: center;
     }
   </style>
 </head>
 <body>
   <a class="Logout" href="https://accounts.spotify.com/pl/authorize?scope=user-top-read&response_type=code&flow_ctx=4289ae04-8307-4427-a988-64d57bc933ca%3A1718204834&redirect_uri=http%3A%2F%2F127.0.0.1%3A8888%2Fcallback&client_id=0689d1156c404b359ed3edd8c943df3e&show_dialog=True">Logout</a>
-  <div class="cube">
-    {% for img in imgs %}
-      <button class="button" data-artist="{{ img[1] }}">
-        <img src="{{ img[0] }}" alt="{{ img[1] }}">
-      </button>
-    {% endfor %}
+  <div class="content">
+    <div class="cube">
+      {% for img in imgs %}
+        <button class="button" data-artist="{{ img[1] }}">
+          <img src="{{ img[0] }}" alt="{{ img[1] }}">
+        </button>
+      {% endfor %}
+    </div>
+    <ul class="list">
+      {% for item in list %}
+        <li>{{ item[0] }} Author: {{item[1]}}</li>
+      {% endfor %}
+    </ul>
   </div>
 <script src="static/scripts/script.js"></script>
 </body>
