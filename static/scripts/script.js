@@ -1,45 +1,42 @@
+let i = 1
+let squareCenterX = window.innerWidth / 2;
+let squareCenterY = window.innerHeight / 2;
+const cube =  document.querySelector('.cube').getBoundingClientRect();
 class Button{
   constructor(button){
     this.button = button;
-    this.button.style.width = `${Math.floor(Math.random() * 100) + 50}px`;
-    this.gravityX = 0.0015*parseInt(this.button.style.width);
-    this.gravityY = 0.001*parseInt(this.button.style.width);
-    this.friction = .06;
-    this.repelForce = 0.008*parseInt(this.button.style.width);
-    this.velocityX = 0;
-    this.velocityY = 0;
-    this.collidedX = false;
-    this.collidedY = false;
+    this.button.style.width = `${Math.floor(i * 100) + 50}px`;
+    i-=0.05
+    this.reset()
   }
   reset(){
-    this.gravityX = 0.0015*parseInt(this.button.style.width);
-    this.gravityY = 0.001*parseInt(this.button.style.width);
+    this.gravity = 0.15;
     this.friction = .06;
-    this.repelForce = 0.01*parseInt(this.button.style.width);
+    this.repelForce = 1;
     this.velocityX = 0;
     this.velocityY = 0;
-    this.collidedX = false;
-    this.collidedY = false;
   }
   move(){
     setInterval(() => {
       this.button.style.top = `${parseFloat(this.button.style.top) + this.velocityY}px`;
       this.button.style.left = `${parseFloat(this.button.style.left) + this.velocityX}px`;
-      const cube =  document.querySelector('.cube').getBoundingClientRect();
-      squareCenterY = cube.top + cube.height / 2;
-      squareCenterX = cube.left + cube.width / 2;
+      squareCenterY = cube.height / 2;
+      squareCenterX = cube.width / 2;
       
-      if (parseFloat(this.button.style.top) + this.button.offsetHeight >= squareCenterY) {
-        this.velocityY -= this.gravityY;
-      } else {
-        this.velocityY += this.gravityY;
+      if (parseFloat(this.button.style.top) + this.button.offsetHeight/2 > squareCenterY){
+        this.velocityY -= this.gravity;
+      }
+      else{
+        this.velocityY += this.gravity;
       }
       
-      if (parseFloat(this.button.style.left) + this.button.offsetWidth >= squareCenterX) {
-        this.velocityX -= this.gravityX;
-      } else {
-        this.velocityX += this.gravityX;
+      if (parseFloat(this.button.style.left) + this.button.offsetWidth/2 > squareCenterX){
+        this.velocityX -= this.gravity;
       }
+      else{
+        this.velocityX += this.gravity;
+      }
+      
       
       this.velocityX *= 1 - this.friction;
       this.velocityY *= 1 - this.friction;
@@ -54,7 +51,7 @@ class Button{
           const otherButtonCenterX = otherButtonRect.left + otherButtonRect.width / 2;
           const otherButtonCenterY = otherButtonRect.top + otherButtonRect.height / 2;
           const distance = Math.sqrt(Math.pow(buttonCenterX - otherButtonCenterX, 2) + Math.pow(buttonCenterY - otherButtonCenterY, 2));
-          const collisionDistance = (buttonRect.width + otherButtonRect.width) / 2; // Assuming buttons have the same radius
+          const collisionDistance = (buttonRect.width + otherButtonRect.width) / 2; 
           
           if (distance < collisionDistance) {    
           const dx = buttonCenterX - otherButtonCenterX;
@@ -72,35 +69,18 @@ class Button{
     }, 1);
   }
 }
-let stop = false;
 const buttons = document.querySelectorAll('button');
-console.log(buttons)
-window.addEventListener('DOMContentLoaded', () => {
-  buttons.forEach((button) => {
-    const randomX = Math.random() * (window.innerWidth);
-    const randomY = Math.random() * (window.innerHeight);
-    button.style.left = `${randomX}px`;
-    button.style.top = `${randomY}px`;
-    squareCenterX = window.innerWidth / 2;
-    squareCenterY = window.innerHeight / 2;
-  });
-});
-let before = false;
 buttons.forEach((button) => {
   const newButton = new Button(button);
   newButton.move();
   newButton.button.addEventListener('mousedown', (event) => {
-    const initialX = event.clientX;
-    const initialY = event.clientY;
     const buttonRect = button.getBoundingClientRect();
-    const offsetX = initialX - buttonRect.left;
-    const offsetY = initialY - buttonRect.top;
+    const offsetX = event.clientX + cube.left - buttonRect.left;
+    const offsetY = event.clientY + cube.top - buttonRect.top;
 
     const handleMouseMove = (event) => {
-      const newX = event.clientX - offsetX;
-      const newY = event.clientY - offsetY;
-      button.style.left = `${newX}px`;
-      button.style.top = `${newY}px`;
+      button.style.left = `${event.clientX - offsetX}px`;
+      button.style.top = `${event.clientY - offsetY}px`;
       newButton.velocityX = 0;
       newButton.velocityY = 0;
       newButton.gravityX = 0;
@@ -117,5 +97,4 @@ buttons.forEach((button) => {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
   });
-  console.log("aaaa")
 });
