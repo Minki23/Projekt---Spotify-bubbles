@@ -11,7 +11,7 @@ api = Api(app)
 
 CLIENT_ID = '0689d1156c404b359ed3edd8c943df3e'
 CLIENT_SECRET = '43d103e7338d4f8ebe3a6b89e04ccda7'
-REDIRECT_URI = 'http://127.0.0.1:8888/callback'
+REDIRECT_URI = 'http://localhost:5500/index.html'
 SCOPE = 'user-read-private user-read-email user-top-read'
 
 sp_oauth = oauth2.SpotifyOAuth(
@@ -258,7 +258,7 @@ api.add_resource(TopSongs, '/songs')
 
 @app.route('/')
 def start():
-    return redirect('/index')
+    return redirect('/swagger')
 
 @app.route('/login')
 def login():
@@ -271,18 +271,8 @@ def callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     session['token_info'] = token_info
-    return redirect('/home')
-
-@app.route('/index')
-def index():
-    return render_template('index.html')
-
-@app.route('/home')
-def home():
-    artists = TopArtists().get()
-    tracks = TopSongs().get()
-    return render_template('home.html', imgs=artists, list=tracks)
+    return redirect('/swagger')
 
 # Run the Flask application
 if __name__ == '__main__':
-    app.run(port=8888, debug=True, host='127.0.0.1')
+    app.run(port=5000, debug=True, host='127.0.0.1')
