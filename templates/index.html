@@ -3,10 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Login</title>
+    <title>Spotify Flask API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #1aa34a;
+        }
+        .data {
+            margin: 20px 0;
+        }
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <h1>Login with Spotify</h1>
-    <a href="{{ login_url }}">Login to Spotify</a>
+    <div class="container">
+        <h1>Spotify Flask API</h1>
+        <button class="button" onclick="login()">Login with Spotify</button>
+        <button class="button" onclick="fetchProfile()">Get Profile</button>
+        <button class="button" onclick="fetchPictures()">Get Pictures</button>
+        <button class="button" onclick="fetchTopArtists()">Get Top Artists</button>
+
+        <div class="data" id="data"></div>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://127.0.0.1:8888';
+
+        function login() {
+            window.location.href = `${BASE_URL}/login`;
+        }
+
+        async function fetchProfile() {
+            clearMessages();
+            try {
+                const response = await fetch(`${BASE_URL}/profile`);
+                const data = await response.json();
+                if (response.ok) {
+                    displayData(data);
+                } else {
+                    displayError(data.error);
+                }
+            } catch (error) {
+                displayError('An error occurred while fetching profile data.');
+            }
+        }
+
+        async function fetchPictures() {
+            try {
+                const response = await fetch(`${BASE_URL}/pictures`);
+                const data = await response.json();
+                if (response.ok) {
+                    displayData(data);
+                } else {
+                    displayError(data.error);
+                }
+            } catch (error) {
+                displayError('An error occurred while fetching pictures.');
+            }
+        }
+
+        async function fetchTopArtists() {
+            try {
+                const response = await fetch(`${BASE_URL}/artists`);
+                const data = await response.json();
+                if (response.ok) {
+                    displayData(data);
+                } else {
+                    displayError(data.error);
+                }
+            } catch (error) {
+                displayError('An error occurred while fetching top artists.');
+            }
+        }
+
+        function displayData(data) {
+            const dataDiv = document.getElementById('data');
+            dataDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function displayError(error) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = error;
+        }
+
+        function clearMessages() {
+            document.getElementById('data').innerHTML = '';
+            document.getElementById('error').textContent = '';
+        }
+    </script>
 </body>
 </html>

@@ -10,9 +10,9 @@ class Button{
     this.reset()
   }
   reset(){
-    this.gravity = 0.1;
+    this.gravity = 0.05;
     this.friction = .06;
-    this.repelForce = .6;
+    this.repelForce = .3;
     this.velocityX = 0;
     this.velocityY = 0;
   }
@@ -65,7 +65,7 @@ class Button{
           }
         }
         });
-    }, 1);
+    }, 3);
   }
 }
 const buttons = document.querySelectorAll('button');
