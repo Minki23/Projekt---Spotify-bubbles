@@ -72,8 +72,8 @@
   <div class="content">
     <div class="cube">
       {% for img in imgs %}
-        <button class="button" data-artist="{{ img[0] }}">
-          <img src="{{ img[1] }}" alt="{{ img[0] }}">
+        <button class="button" data-artist="{{ img[1] }}">
+          <img src="{{ img[0] }}" alt="{{ img[1] }}">
         </button>
       {% endfor %}
     </div>
