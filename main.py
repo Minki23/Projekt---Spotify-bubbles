@@ -19,12 +19,13 @@ def callback():
 def home():
     time_range = request.args.get('time_range', 'short_term')
     data_type = request.args.get('data_type', 'artists')
+    profile_pic = requests.get(API_URL + "/api/MyPicture").json()
     if data_type == 'artists':
         imgs = requests.get(API_URL + "/api/FavArtists?time_range={}".format(time_range)).json()
     else:
         imgs = requests.get(API_URL + "/api/FavSongs?time_range={}".format(time_range)).json()
     recommended_tracks = requests.get(API_URL + "/api/Recommendations?time_range={}".format(time_range)).json()
-    return render_template('home.html', items=imgs, recommendations=recommended_tracks["recommendations"], selected_range=time_range, selected_data_type=data_type)
+    return render_template('home.html', items=imgs, recommendations=recommended_tracks["recommendations"], selected_range=time_range, selected_data_type=data_type, profile_pic = profile_pic)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="127.0.0.1")

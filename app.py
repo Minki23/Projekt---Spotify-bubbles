@@ -20,11 +20,6 @@ cache_path = os.path.join(str(Path.home()), '.cache')
 os.makedirs(cache_path, exist_ok=True)
 app.secret_key = '8c12a131e8964aa8874bc0f5fe4560e8'
 
-SPOTIPY_CLIENT_ID = "8dd947abb4a341f3a58073753636b4bf"
-SPOTIPY_CLIENT_SECRET = "8c12a131e8964aa8874bc0f5fe4560e8"
-SPOTIPY_REDIRECT_URI = "http://127.0.0.1:8888/callback"
-scope = 'user-top-read'
-
 sp_oauth = oauth2.SpotifyOAuth(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
@@ -82,7 +77,7 @@ class Pictures(Resource):
             if profile_response.status_code == 200:
                 profile_data = profile_response.json()
                 if 'images' in profile_data and profile_data['images']:
-                    return {"url": profile_data['images'][0]['url']}
+                    return {"url": profile_data['images'][1]['url']}
                 else:
                     return {"error": "No profile pictures found"}, 404
             else:
