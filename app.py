@@ -11,6 +11,7 @@ SPOTIPY_CLIENT_SECRET = "8c12a131e8964aa8874bc0f5fe4560e8"
 SPOTIPY_REDIRECT_URI = "http://127.0.0.1:8888/callback"
 scope = 'user-top-read'
 
+
 sp_oauth = oauth2.SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, scope='user-top-read', show_dialog=True)
 
 def get_token():

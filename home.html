@@ -37,6 +37,8 @@
       display: flex;
       align-items: flex-start;
       gap: 20px;
+      width: 100%;
+      justify-content: center;
     }
     .time-range-form,
     .data-type-form {
@@ -72,29 +74,36 @@
       border-radius: 15px;
       overflow: hidden;
       padding: 10px;
+      position: relative;
     }
-    .button {
+    
+
+  .button {
     width: 50px;
     height: 50px;
-    border-radius: 50%; /* Dodaj tę właściwość */
-    position: relative;
+    border-radius: 50%;
+    position: absolute;
     overflow: hidden;
     transition: transform 0.3s ease;
     background-color: transparent;
     border: none;
     padding: 0;
     cursor: pointer;
-    }
-    .button:hover {
-      transform: scale(1.1);
-    }
-    .button img {
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
-    }
+    display: flex; /* Dodano, aby centrować obraz w przycisku */
+    align-items: center; /* Dodano, aby centrować obraz w przycisku */
+    justify-content: center; /* Dodano, aby centrować obraz w przycisku */
+  }
+  .button:hover {
+        transform: scale(1.1);
+      }
+  .button img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
     .button:hover::after {
       content: attr(data-item);
       display: block;
@@ -111,7 +120,7 @@
       z-index: 1;
     }
     .list {
-      width: 30vw;
+      width: 20vw;
       max-height: 50vh;
       background-color: #2c2c2c;
       border-radius: 15px;
@@ -130,33 +139,39 @@
       background-color: #3a3a3a;
       border-radius: 5px;
     }
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
   <a class="Logout" href="https://accounts.spotify.com/pl/authorize?scope=user-top-read&response_type=code&flow_ctx=4289ae04-8307-4427-a988-64d57bc933ca%3A1718204834&redirect_uri=http%3A%2F%2F127.0.0.1%3A8888%2Fcallback&client_id=0689d1156c404b359ed3edd8c943df3e&show_dialog=True">Logout</a>
   
+  <div class="form-container">
+    <form class="time-range-form" action="{{ url_for('home') }}" method="get">
+      <label for="time_range">Select Time Range:</label>
+      <select name="time_range" id="time_range" onchange="this.form.submit()">
+        <option value="short_term" {% if selected_range == 'short_term' %}selected{% endif %}>Last Week</option>
+        <option value="medium_term" {% if selected_range == 'medium_term' %}selected{% endif %}>Last Month</option>
+        <option value="long_term" {% if selected_range == 'long_term' %}selected{% endif %}>Last Year</option>
+      </select>
+    </form>
+
+    <form class="data-type-form" action="{{ url_for('home') }}" method="get">
+      <label for="data_type">Select Data Type:</label>
+      <select name="data_type" id="data_type" onchange="this.form.submit()">
+        <option value="artists" {% if selected_data_type == 'artists' %}selected{% endif %}>Top Artists</option>
+        <option value="tracks" {% if selected_data_type == 'tracks' %}selected{% endif %}>Top Tracks</option>
+      </select>
+      <!-- Include the selected time range in the data type form -->
+      <input type="hidden" name="time_range" value="{{ selected_range }}">
+    </form>
+  </div>
+
   <div class="content">
-    <div>
-      <form class="time-range-form" action="{{ url_for('home') }}" method="get">
-        <label for="time_range">Select Time Range:</label>
-        <select name="time_range" id="time_range" onchange="this.form.submit()">
-          <option value="short_term" {% if selected_range == 'short_term' %}selected{% endif %}>Short Term</option>
-          <option value="medium_term" {% if selected_range == 'medium_term' %}selected{% endif %}>Medium Term</option>
-          <option value="long_term" {% if selected_range == 'long_term' %}selected{% endif %}>Long Term</option>
-        </select>
-      </form>
-
-      <form class="data-type-form" action="{{ url_for('home') }}" method="get">
-        <label for="data_type">Select Data Type:</label>
-        <select name="data_type" id="data_type" onchange="this.form.submit()">
-          <option value="artists" {% if selected_data_type == 'artists' %}selected{% endif %}>Top Artists</option>
-          <option value="tracks" {% if selected_data_type == 'tracks' %}selected{% endif %}>Top Tracks</option>
-        </select>
-        <!-- Include the selected time range in the data type form -->
-        <input type="hidden" name="time_range" value="{{ selected_range }}">
-      </form>
-    </div>
-
     <div class="cube">
       {% for item in items %}
         <button class="button" data-item="{{ item[1] }}">
@@ -164,14 +179,14 @@
         </button>
       {% endfor %}
     </div>
+
+    <ul class="list">
+      <h3>Recommended Tracks</h3>
+      {% for item in recommendations %}
+        <li>{{ item[0] }} Author: {{ item[1] }}</li>
+      {% endfor %}
+    </ul>
   </div>
-  
-  <ul class="list">
-    <h3>Recommended Tracks</h3>
-    {% for item in recommendations %}
-      <li>{{ item[0] }} Author: {{ item[1] }}</li>
-    {% endfor %}
-  </ul>
 
   <script src="static/scripts/script.js"></script>
 </body>
