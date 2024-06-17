@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h2>Top Songs</h2>
+    <ul>
+        {% for song in songs %}
+            <li>
+                <p>{{ song.name }} by {{ song.artist }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

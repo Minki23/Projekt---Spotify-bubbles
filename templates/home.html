@@ -4,12 +4,16 @@
   <style>
     body {
       margin: 0;
+      background-color: rgb(0, 0, 0);
+      display: flex;
+      flex-direction: row;
     }
-    button{
+    .orb{
       aspect-ratio: 1;
       width: 100px;
       border-radius: 100%;
       position: absolute;
+      background-color: transparent;
     }
     img{
       border-radius: 100%;
@@ -17,7 +21,7 @@
       width: 100%;
       pointer-events: none;
     }
-    .button:hover::after {
+    .orb:hover::after {
       content: attr(data-artist);
       display: block;
       position: absolute;
@@ -34,13 +38,14 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: blanchedalmond;
+      background-color: rgb(255, 255, 0);
     }
     .cube {
       position: relative;
       width: 30vw;
       height: 30vw;
-      background-color: aqua;
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 10%;
       overflow: hidden;
       margin: 20px;
     }
@@ -49,35 +54,49 @@
       position: relative;
       right: 0;
       width: 30vw;
-      max-height: 30vh;
+      max-height: 20vh;
       height: fit-content;
       overflow: scroll;
       background-color: rgb(212, 125, 145);
+      border-radius: 5px;
     }
     
     .content{
       display: flex;
-      align-items: center;
+      flex-direction: column;
     }
   </style>
 </head>
 <body>
-  <a class="Logout" href="https://accounts.spotify.com/pl/authorize?scope=user-top-read&response_type=code&flow_ctx=4289ae04-8307-4427-a988-64d57bc933ca%3A1718204834&redirect_uri=http%3A%2F%2F127.0.0.1%3A8888%2Fcallback&client_id=0689d1156c404b359ed3edd8c943df3e&show_dialog=True">Logout</a>
+  <script>
+    const API_URL = 'http://127.0.0.1:8888'
+        async function fetchData(endpoint) {
+            try {
+                const response = await fetch(API_URL + endpoint);
+                const data = await response.json();
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('result').innerText = 'Error fetching data'+error;
+            }
+        }
+  </script>
+  <button class="Logout" onclick="fetchData('/api/Logout')"></button>
   <div class="content">
     <div class="cube">
       {% for img in imgs %}
-        <button class="button" data-artist="{{ img[1] }}">
-          <img src="{{ img[0] }}" alt="{{ img[1] }}">
+        <button class="orb" data-artist="{{ img['name'] }}">
+          <img src="{{ img['image'] }}" alt="{{ img['name'] }}">
         </button>
       {% endfor %}
     </div>
     <ul class="list">
       {% for item in list %}
-        <li>{{ item[0] }} Author: {{item[1]}}</li>
+        <li>{{ item['name'] }} Author: {{item['artist']}}</li>
       {% endfor %}
     </ul>
   </div>
-<script src="static/scripts/script.js"></script>
+
+<script src="static/script.js"></script>
 </body>
 </html>
 
