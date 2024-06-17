@@ -8,7 +8,7 @@
       display: flex;
       flex-direction: row;
     }
-    button{
+    .orb{
       aspect-ratio: 1;
       width: 100px;
       border-radius: 100%;
@@ -21,7 +21,7 @@
       width: 100%;
       pointer-events: none;
     }
-    .button:hover::after {
+    .orb:hover::after {
       content: attr(data-artist);
       display: block;
       position: absolute;
@@ -68,18 +68,30 @@
   </style>
 </head>
 <body>
-  <a class="Logout" href="http://127.0.0.1:8888/">Logout</a>
+  <script>
+    const API_URL = 'http://127.0.0.1:8888'
+        async function fetchData(endpoint) {
+            try {
+                const response = await fetch(API_URL + endpoint);
+                const data = await response.json();
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('result').innerText = 'Error fetching data'+error;
+            }
+        }
+  </script>
+  <button class="Logout" onclick="fetchData('/api/Logout')"></button>
   <div class="content">
     <div class="cube">
       {% for img in imgs %}
-        <button class="button" data-artist="{{ img[1] }}">
-          <img src="{{ img[0] }}" alt="{{ img[1] }}">
+        <button class="orb" data-artist="{{ img['name'] }}">
+          <img src="{{ img['image'] }}" alt="{{ img['name'] }}">
         </button>
       {% endfor %}
     </div>
     <ul class="list">
       {% for item in list %}
-        <li>{{ item[0] }} Author: {{item[1]}}</li>
+        <li>{{ item['name'] }} Author: {{item['artist']}}</li>
       {% endfor %}
     </ul>
   </div>

@@ -68,7 +68,7 @@ class Button{
     }, 3);
   }
 }
-const buttons = document.querySelectorAll('button');
+const buttons = document.querySelectorAll('.orb');
 buttons.forEach((button) => {
   button.style.top = `${Math.random() * (cube.height - button.offsetHeight)}px`;
   button.style.left = `${Math.random() * (cube.width - button.offsetWidth)}px`;

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h2>User Profile</h2>
+    {% if profile %}
+        <p>Name: {{ profile.display_name }}</p>
+        <p>Email: {{ profile.email }}</p>
+        {% if profile.images %}
+            <img src="{{ profile.images[0].url }}" alt="Profile Picture">
+        {% endif %}
+    {% else %}
+        <p>Loading...</p>
+    {% endif %}
+{% endblock %}
