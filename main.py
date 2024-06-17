@@ -24,7 +24,6 @@ def home():
     else:
         imgs = requests.get(API_URL + "/api/FavSongs?time_range={}".format(time_range)).json()
     recommended_tracks = requests.get(API_URL + "/api/Recommendations?time_range={}".format(time_range)).json()
-    print(recommended_tracks)
     return render_template('home.html', items=imgs, recommendations=recommended_tracks["recommendations"], selected_range=time_range, selected_data_type=data_type)
 
 if __name__ == "__main__":
