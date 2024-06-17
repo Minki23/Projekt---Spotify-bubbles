@@ -1,355 +1,448 @@
 {
   "swagger": "2.0",
   "info": {
-      "title": "Spotify Flask API",
-      "description": "API documentation for Spotify integration with Flask",
-      "version": "6.9.2137"
+    "title": "Spotify Flask API",
+    "description": "API documentation for Spotify integration with Flask",
+    "version": "6.9.2137"
   },
   "basePath": "/",
   "schemes": [
-      "http"
+    "http"
   ],
   "tags": [
-      {
-          "name": "Authentication and Token Management",
-          "description": "Endpoints related to user authentication and token management."
-      },
-      {
-          "name": "User Information",
-          "description": "Endpoints for retrieving user-specific information from Spotify."
-      },
-      {
-          "name": "Favorites",
-          "description": "Endpoints for retrieving user's favorite artists and songs."
-      }
+    {
+      "name": "Authentication and Token Management",
+      "description": "Endpoints related to user authentication and token management."
+    },
+    {
+      "name": "User Information",
+      "description": "Endpoints for retrieving user-specific information from Spotify."
+    }
   ],
   "paths": {
-      "/api/Login": {
-          "get": {
-              "summary": "Get Spotify access token",
-              "tags": ["Authentication and Token Management"],
-              "description": "Retrieve an access token for authenticating with Spotify's API.",
-              "responses": {
-                  "200": {
-                      "description": "Successful operation",
-                      "schema": {
-                          "type": "object"
-                      }
-                  },
-                  "400": {
-                      "description": "Bad Request. Invalid request parameters.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "500": {
-                      "description": "Internal Server Error. Something went wrong on the server.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  }
+    "/api/Login": {
+      "get": {
+        "summary": "Get Spotify access token",
+        "tags": [
+          "Authentication and Token Management"
+        ],
+        "description": "Retrieve an access token for authenticating with Spotify's API.",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad Request. Invalid request parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
               }
-          }
-      },
-      "/api/Logout": {
-          "get": {
-              "summary": "Log out the user",
-              "tags": ["Authentication and Token Management"],
-              "description": "Log out the currently authenticated user.",
-              "responses": {
-                  "200": {
-                      "description": "Successful operation",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "message": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "401": {
-                      "description": "Unauthorized. Authentication required.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "500": {
-                      "description": "Internal Server Error. Something went wrong on the server.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
               }
+            }
           }
-      },
-      "/api/MyProfile": {
-          "get": {
-              "summary": "Get user profile from Spotify",
-              "tags": ["User Information"],
-              "description": "Retrieve the Spotify profile information for the authenticated user.",
-              "responses": {
-                  "200": {
-                      "description": "Successful operation",
-                      "schema": {
-                          "type": "object"
-                      }
-                  },
-                  "401": {
-                      "description": "Unauthorized. Authentication required.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "404": {
-                      "description": "Not Found. The specified resource was not found.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "500": {
-                      "description": "Internal Server Error. Something went wrong on the server.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/MyPicture": {
-          "get": {
-              "summary": "Get user pictures from Spotify",
-              "tags": ["User Information"],
-              "description": "Retrieve the Spotify profile pictures for the authenticated user.",
-              "responses": {
-                  "200": {
-                      "description": "Successful operation",
-                      "schema": {
-                          "type": "object"
-                      }
-                  },
-                  "401": {
-                      "description": "Unauthorized. Authentication required.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "404": {
-                      "description": "Not Found. The specified resource was not found.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "500": {
-                      "description": "Internal Server Error. Something went wrong on the server.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/FavArtists": {
-          "get": {
-              "summary": "Get user favorite artists from Spotify",
-              "tags": ["Favorites"],
-              "description": "Retrieve the favorite artists for the authenticated user from Spotify.",
-              "parameters": [
-                  {
-                      "name": "limit",
-                      "in": "query",
-                      "description": "Number of artists to return",
-                      "required": false,
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  {
-                      "name": "scope",
-                      "in": "query",
-                      "description": "Scope of artists to return",
-                      "required": false,
-                      "type": "string"
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "Successful operation",
-                      "schema": {
-                          "type": "array",
-                          "items": {
-                              "type": "object",
-                              "properties": {
-                                  "name": {
-                                      "type": "string"
-                                  },
-                                  "image": {
-                                      "type": "string"
-                                  }
-                              }
-                          }
-                      }
-                  },
-                  "401": {
-                      "description": "Unauthorized. Authentication required.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad Request. Invalid request parameters.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "500": {
-                      "description": "Internal Server Error. Something went wrong on the server.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/FavSongs": {
-          "get": {
-              "summary": "Get user favorite songs from Spotify",
-              "tags": ["Favorites"],
-              "description": "Retrieve the favorite songs for the authenticated user from Spotify.",
-              "parameters": [
-                  {
-                      "name": "limit",
-                      "in": "query",
-                      "description": "Number of songs to return",
-                      "required": false,
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  {
-                      "name": "scope",
-                      "in": "query",
-                      "description": "Scope of songs to return",
-                      "required": false,
-                      "type": "string"
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "Successful operation",
-                      "schema": {
-                          "type": "array",
-                          "items": {
-                              "type": "object",
-                              "properties": {
-                                  "name": {
-                                      "type": "string"
-                                  },
-                                  "artist": {
-                                      "type": "string"
-                                  }
-                              }
-                          }
-                      }
-                  },
-                  "401": {
-                      "description": "Unauthorized. Authentication required.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad Request. Invalid request parameters.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "500": {
-                      "description": "Internal Server Error. Something went wrong on the server.",
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "error": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
+        }
       }
+    },
+    "/api/Logout": {
+      "get": {
+        "summary": "Log out the user",
+        "tags": [
+          "Authentication and Token Management"
+        ],
+        "description": "Log out the currently authenticated user.",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Authentication required.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/MyProfile": {
+      "get": {
+        "summary": "Get user profile from Spotify",
+        "tags": [
+          "User Information"
+        ],
+        "description": "Retrieve the Spotify profile information for the authenticated user.",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Authentication required.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. The specified resource was not found.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/MyPicture": {
+      "get": {
+        "summary": "Get user pictures from Spotify",
+        "tags": [
+          "User Information"
+        ],
+        "description": "Retrieve the Spotify profile pictures for the authenticated user.",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Authentication required.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. The specified resource was not found.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/FavArtists": {
+      "get": {
+        "summary": "Get user favorite artists from Spotify",
+        "tags": [
+          "User media"
+        ],
+        "description": "Retrieve the favorite artists for the authenticated user from Spotify.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of artists to return",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "Scope of artists to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Authentication required.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Invalid request parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/FavSongs": {
+      "get": {
+        "summary": "Get user favorite songs from Spotify",
+        "tags": [
+          "User media"
+        ],
+        "description": "Retrieve the favorite songs for the authenticated user from Spotify.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of songs to return",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "Scope of songs to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "artist": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Authentication required.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Invalid request parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recommendations": {
+      "get": {
+        "summary": "Get song recommendations from Spotify",
+        "tags": [
+          "User media"
+        ],
+        "description": "Retrieve song recommendations for the authenticated user from Spotify.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of recommendations to return",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "seed_artists",
+            "in": "query",
+            "description": "Comma-separated list of seed artist IDs",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "seed_tracks",
+            "in": "query",
+            "description": "Comma-separated list of seed track IDs",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "artist": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Authentication required.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Invalid request parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
