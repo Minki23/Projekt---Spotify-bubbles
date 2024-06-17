@@ -83,7 +83,6 @@
     height: 50px;
     border-radius: 50%;
     position: absolute;
-    overflow: hidden;
     transition: transform 0.3s ease;
     background-color: transparent;
     border: none;
@@ -183,10 +182,18 @@
     <ul class="list">
       <h3>Recommended Tracks</h3>
       {% for item in recommendations %}
-        <li>{{ item[0] }} Author: {{ item[1] }}</li>
+        <li>{{ item[0] }} Author: {{ item[1]}} Uri {{item[2]}}</li>
       {% endfor %}
     </ul>
-  </div>
+    <form action="{{ url_for('add_to_playlist') }}" method="post">
+      <input type="hidden" name="tracks" value="{{ recommendations }}">
+      <button type="submit">Add Recommended Tracks to Playlist</button>
+    </form>
+    
+</div>
+
+
+   
 
   <script src="static/scripts/script.js"></script>
 </body>
