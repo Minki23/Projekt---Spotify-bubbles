@@ -7,6 +7,7 @@ import json
 from flask_cors import CORS
 import requests
 from spotipy import oauth2, Spotify
+import ast
 
 app = Flask(__name__)
 CORS(app)
@@ -55,6 +56,7 @@ def get_token():
         session['token_info'] = token_info
     return token_info['access_token']
 
+
 # Resource classes for API endpoints
 class Login(Resource):
     def get(self):
@@ -73,6 +75,48 @@ class Login(Resource):
             app.logger.error(f"Failed to fetch access token: {token_info}")
             return {"error": "Failed to fetch access token"}, 500
 
+
+
+class CreatePlaylist(Resource):
+    def post(self):
+        """
+        Creates a new Spotify playlist and adds tracks to it.
+        """
+        token = get_token()
+        if not token:
+            return redirect(url_for('login'))
+
+        sp = Spotify(auth=token)
+
+        tracks = request.json.get('tracks')
+        if not tracks:
+            return {'message': 'No tracks provided'}, 400
+
+        try:
+            tracks_list = ast.literal_eval(tracks[0])
+        except (ValueError, SyntaxError) as e:
+            return {'message': 'Invalid tracks format'}, 400
+
+        uri_list = [track['uri'] for track in tracks_list]
+
+        user = sp.current_user()
+        if not user:
+            return {'message': 'Failed to fetch user information'}, 500
+
+        user_id = user['id']
+        playlist_name = 'My new songs recommendations!!!<3'
+        playlist_description = 'This is a new playlist created from your recommendations by our Spotify Bubbles website!'
+
+        playlist = sp.user_playlist_create(user=user_id, name=playlist_name, public=True, description=playlist_description)
+        if not playlist:
+            return {'message': 'Failed to create playlist'}, 500
+
+        playlist_id = playlist['id']
+        sp.playlist_add_items(playlist_id, uri_list)
+
+        return {'message': 'Songs added sucsesfully!'}, 200
+
+            
 class UserProfile(Resource):
     def get(self):
         """
@@ -93,6 +137,7 @@ class UserProfile(Resource):
                 return {"error": "Failed to fetch user profile"}, profile_response.status_code
         else:
             return {"error": "Authentication required"}, 401
+        
 
 class Pictures(Resource):
     def get(self):
@@ -118,6 +163,7 @@ class Pictures(Resource):
                 return {"error": "Failed to fetch pictures"}, profile_response.status_code
         else:
             return {"error": "Authentication required"}, 401
+        
 
 class TopArtists(Resource):
     def get(self):
@@ -144,6 +190,7 @@ class TopArtists(Resource):
                 return {"error": "Failed to fetch top artists"}, top_artists_response.status_code
         else:
             return {"error": "Authentication required"}, 401
+        
 
 class TopSongs(Resource):
     def get(self):
@@ -170,6 +217,7 @@ class TopSongs(Resource):
                 return {"error": "Failed to fetch top songs"}, top_songs_response.status_code
         else:
             return {"error": "Authentication required"}, 401
+        
 
 class RecommendSongs(Resource):
     def get(self):
@@ -187,13 +235,14 @@ class RecommendSongs(Resource):
             artist_ids = [artist['id'] for artist in top_artists['items'][:5]]
             
             recommendations = sp.recommendations(seed_artists=artist_ids, limit=20)
-            recommended_tracks = [{"name": track['name'], "artist": track['artists'][0]['name']} for track in recommendations['tracks']]
+            recommended_tracks = [{"name": track['name'], "artist": track['artists'][0]['name'], "uri": track['uri']} for track in recommendations['tracks']]
             if recommended_tracks:
                 return jsonify({"recommendations": recommended_tracks})
             else:
                 return {"error": "No recommendations found"}, 404
         else:
             return {"error": "Authentication required"}, 401
+
 
 class ReceiveToken(Resource):
     def put(self):
@@ -219,6 +268,7 @@ class Logout(Resource):
         os.remove(os.path.join(cache_path, 'spotify_cache'))
         return make_response(jsonify({"message": "Successfully logged out"}), 200)
 
+
 # Swagger UI setup
 SWAGGER_URL = '/swagger'
 API_URL = '/swagger.json'
@@ -229,6 +279,7 @@ swaggerui_blueprint = get_swaggerui_blueprint(
         'app_name': "Spotify Flask API"
     },
 )
+
 
 @app.route(API_URL)
 def swagger_json():
@@ -251,6 +302,7 @@ api.add_resource(TopArtists, '/api/FavArtists')
 api.add_resource(TopSongs, '/api/FavSongs')
 api.add_resource(RecommendSongs, '/api/Recommendations')
 api.add_resource(ReceiveToken, '/api/ReceiveToken')
+api.add_resource(CreatePlaylist, '/api/add_to_playlist')
 
 # Run the Flask application
 if __name__ == '__main__':

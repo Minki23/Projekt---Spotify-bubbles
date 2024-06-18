@@ -5,6 +5,7 @@ from flask import request
 from flask import render_template
 import requests
 
+
 app = flask.Flask(__name__)
 API_URL = "http://127.0.0.1:8888"
 
@@ -27,6 +28,9 @@ def callback():
         flask.Response: Redirects to the home page URL.
     """
     return redirect(url_for('home'))
+import requests
+from flask import request, redirect, url_for
+
 
 @app.route("/home")
 def home():
@@ -50,6 +54,23 @@ def home():
     
     return render_template('home.html', items=imgs, recommendations=recommended_tracks["recommendations"], 
                            selected_range=time_range, selected_data_type=data_type, profile_pic=profile_pic)
+
+
+@app.route('/add_to_playlist_route', methods=['POST'])
+def add_to_playlist_route():
+    """
+    Adds tracks to a Spotify playlist via an API call.
+    """
+    tracks = request.form.getlist('tracks')
+    data = {'tracks': tracks}
+    
+    response = requests.post(API_URL + "/api/add_to_playlist", json=data)
+
+    if response.status_code == 200:
+        return redirect(url_for('home'))
+    else:
+        return "Error adding tracks to playlist"
+    
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="127.0.0.1")
