@@ -11,15 +11,26 @@ from spotipy import oauth2, Spotify
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
-CLIENT_ID = '0689d1156c404b359ed3edd8c943df3e'
-CLIENT_SECRET = '43d103e7338d4f8ebe3a6b89e04ccda7'
-REDIRECT_URI = 'http://localhost:5500/'
-SCOPE = 'user-read-private user-read-email user-top-read'
 
+#natalka
+# Spotify API credentials and settings
+CLIENT_ID = "8dd947abb4a341f3a58073753636b4bf"
+CLIENT_SECRET = "8c12a131e8964aa8874bc0f5fe4560e8"
+
+#minki
+# CLIENT_ID = '0689d1156c404b359ed3edd8c943df3e'
+# CLIENT_SECRET = '43d103e7338d4f8ebe3a6b89e04ccda7'
+REDIRECT_URI = 'http://localhost:5500/'
+SCOPE = 'user-top-read user-library-modify playlist-modify-public playlist-modify-private user-read-private user-read-email'
+
+# Cache path for Spotify OAuth token
 cache_path = os.path.join(str(Path.home()), '.cache')
 os.makedirs(cache_path, exist_ok=True)
+
+# Setting app secret key for session management
 app.secret_key = '8c12a131e8964aa8874bc0f5fe4560e8'
 
+# Spotify OAuth object for authorization flow
 sp_oauth = oauth2.SpotifyOAuth(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
@@ -30,6 +41,12 @@ sp_oauth = oauth2.SpotifyOAuth(
 )
 
 def get_token():
+    """
+    Retrieves the current access token from session or refreshes it if expired.
+
+    Returns:
+        str: Access token for Spotify API.
+    """
     token_info = sp_oauth.get_cached_token()
     if not token_info:
         return None
@@ -38,20 +55,32 @@ def get_token():
         session['token_info'] = token_info
     return token_info['access_token']
 
+# Resource classes for API endpoints
 class Login(Resource):
     def get(self):
+        """
+        Initiates the Spotify login process and returns the access token.
+
+        Returns:
+            str: JSON response with access token.
+        """
         token_info = sp_oauth.get_access_token()
         access_token = token_info.get("access_token")
-        session['token_info']=access_token
+        session['token_info'] = access_token
         if access_token:
             return jsonify(access_token)
         else:
             app.logger.error(f"Failed to fetch access token: {token_info}")
             return {"error": "Failed to fetch access token"}, 500
 
-    
 class UserProfile(Resource):
     def get(self):
+        """
+        Retrieves the user profile information from Spotify API.
+
+        Returns:
+            dict: JSON response with user profile data.
+        """
         access_token = get_token()
         if access_token:
             headers = {
@@ -61,13 +90,18 @@ class UserProfile(Resource):
             if profile_response.status_code == 200:
                 return profile_response.json()
             else:
-                return {"error": f"Failed to fetch user profile{access_token.json}"}, profile_response.status_code
+                return {"error": "Failed to fetch user profile"}, profile_response.status_code
         else:
             return {"error": "Authentication required"}, 401
 
-
 class Pictures(Resource):
     def get(self):
+        """
+        Retrieves the user's profile picture URL from Spotify API.
+
+        Returns:
+            dict: JSON response with profile picture URL.
+        """
         access_token = get_token()
         if access_token:
             headers = {
@@ -87,6 +121,12 @@ class Pictures(Resource):
 
 class TopArtists(Resource):
     def get(self):
+        """
+        Retrieves the user's top artists from Spotify API.
+
+        Returns:
+            list: JSON response with top artists data.
+        """
         number_of_artists = request.args.get('limit', 20)
         time_range = request.args.get('time_range', 'short_term')
         access_token = get_token()
@@ -107,6 +147,12 @@ class TopArtists(Resource):
 
 class TopSongs(Resource):
     def get(self):
+        """
+        Retrieves the user's top songs from Spotify API.
+
+        Returns:
+            list: JSON response with top songs data.
+        """
         number_of_songs = request.args.get('limit', 30)
         time_range = request.args.get('time_range', 'short_term')
         access_token = get_token()
@@ -127,6 +173,12 @@ class TopSongs(Resource):
 
 class RecommendSongs(Resource):
     def get(self):
+        """
+        Retrieves recommended songs based on user's top artists from Spotify API.
+
+        Returns:
+            list: JSON response with recommended songs data.
+        """
         access_token = get_token()
         if access_token:
             time_range = request.args.get('time_range', 'short_term')
@@ -135,7 +187,7 @@ class RecommendSongs(Resource):
             artist_ids = [artist['id'] for artist in top_artists['items'][:5]]
             
             recommendations = sp.recommendations(seed_artists=artist_ids, limit=20)
-            recommended_tracks = [{"name": track['name'], "track": track['artists'][0]['name']} for track in recommendations['tracks']]
+            recommended_tracks = [{"name": track['name'], "artist": track['artists'][0]['name']} for track in recommendations['tracks']]
             if recommended_tracks:
                 return jsonify({"recommendations": recommended_tracks})
             else:
@@ -144,17 +196,30 @@ class RecommendSongs(Resource):
             return {"error": "Authentication required"}, 401
 
 class ReceiveToken(Resource):
-     def put(self):
+    def put(self):
+        """
+        Receives and stores the Spotify access token in session.
+
+        Returns:
+            str: JSON response with stored access token.
+        """
         token_info = request.get_json()
         session['token_info'] = token_info['token']   
         return jsonify(token_info) 
 
 class Logout(Resource):
     def get(self):
+        """
+        Clears the session and removes the Spotify cache file upon logout.
+
+        Returns:
+            flask.Response: JSON response indicating successful logout.
+        """
         session.clear()
         os.remove(os.path.join(cache_path, 'spotify_cache'))
         return make_response(jsonify({"message": "Successfully logged out"}), 200)
 
+# Swagger UI setup
 SWAGGER_URL = '/swagger'
 API_URL = '/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(
@@ -167,15 +232,17 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 
 @app.route(API_URL)
 def swagger_json():
+    """
+    Returns the Swagger JSON specification.
+
+    Returns:
+        dict: JSON object containing Swagger API specification.
+    """
     swagger_data = json.load(open('static/swagger.json'))
     return jsonify(swagger_data)
 
-@app.route('/callback')
-def callback():
-    return redirect(url_for('home'))
-
+# Registering API endpoints
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-
 api.add_resource(Login, '/api/Login')
 api.add_resource(Logout, '/api/Logout')
 api.add_resource(UserProfile, '/api/MyProfile')
@@ -183,10 +250,8 @@ api.add_resource(Pictures, '/api/MyPicture')
 api.add_resource(TopArtists, '/api/FavArtists')
 api.add_resource(TopSongs, '/api/FavSongs')
 api.add_resource(RecommendSongs, '/api/Recommendations')
+api.add_resource(ReceiveToken, '/api/ReceiveToken')
 
 # Run the Flask application
 if __name__ == '__main__':
     app.run(port=8888, debug=True, host='127.0.0.1')
-    # Get the authorization code from the callback URL
-    code = request.args.get('code')
-    
