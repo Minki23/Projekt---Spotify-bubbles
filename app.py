@@ -105,7 +105,7 @@ class CreatePlaylist(Resource):
 
         user_id = user['id']
         playlist_name = 'My new songs recommendations!!!<3'
-        playlist_description = 'This is a new playlist created from your recommendations by our Spotify Bubbles website!'
+        playlist_description = 'This is a new playlist created from your recommendations by Spotify Bubbles website!'
 
         playlist = sp.user_playlist_create(user=user_id, name=playlist_name, public=True, description=playlist_description)
         if not playlist:

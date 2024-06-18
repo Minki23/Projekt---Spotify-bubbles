@@ -9,6 +9,7 @@ import requests
 app = flask.Flask(__name__)
 API_URL = "http://127.0.0.1:8888"
 
+
 @app.route("/")
 def login():
     """
