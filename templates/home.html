@@ -47,10 +47,15 @@
     <ul class="list">
       <h3>Recommended Tracks</h3>
       {% for item in recommendations %}
-        <li>{{ item["name"] }} Author: {{ item["track"] }}</li>
+        <li>{{ item["name"] }} Author: {{ item["artist"] }}</li>
       {% endfor %}
     </ul>
+    <form action="{{ url_for('add_to_playlist_route') }}" method="post">
+      <input type="hidden" name="tracks" value="{{ recommendations }}">
+      <button type="submit" class="add-button">Add Recommended Tracks to Playlist</button>
+    </form>
   </div>
+</div>
 
   <script src="/static/script.js"></script>
   <script src="/static/login.js"></script>
