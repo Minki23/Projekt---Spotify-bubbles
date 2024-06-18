@@ -7,6 +7,7 @@ import json
 from flask_cors import CORS
 import requests
 from spotipy import oauth2, Spotify
+import re
 
 app = Flask(__name__)
 CORS(app)
@@ -73,6 +74,29 @@ class Login(Resource):
             app.logger.error(f"Failed to fetch access token: {token_info}")
             return {"error": "Failed to fetch access token"}, 500
 
+
+
+class CreatePlaylist(Resource):
+    def post(self):
+        token = get_token()
+        if not token:
+            return redirect(url_for('login'))
+        sp = Spotify(auth=token)
+        tracks = request.form.getlist('tracks')
+        
+        tracks[0] = tracks[0].replace("'", "")
+        pattern = re.compile(r'\(([^,]+), ([^,]+), ([^\)]+)\)')
+        fixed_tracks = pattern.findall(tracks[0])
+        uri_list = [elem[2] for elem in  fixed_tracks]
+        user_id = sp.current_user()['id']
+        playlist_name = 'My New Playlist'
+        playlist_description = 'This is a new playlist created using Spotipy'
+        playlist = sp.user_playlist_create(user=user_id, name=playlist_name, public=True, description=playlist_description)
+        playlist_id = playlist['id']
+        sp.playlist_add_items(playlist_id, uri_list)
+        return True
+
+    
 class UserProfile(Resource):
     def get(self):
         """

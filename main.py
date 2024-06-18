@@ -5,6 +5,7 @@ from flask import request
 from flask import render_template
 import requests
 
+
 app = flask.Flask(__name__)
 API_URL = "http://127.0.0.1:8888"
 
@@ -27,6 +28,11 @@ def callback():
         flask.Response: Redirects to the home page URL.
     """
     return redirect(url_for('home'))
+@app.route('/add_to_playlist', methods=['POST'])
+def add_to_playlist():
+
+    return redirect(url_for('home'))
+    
 
 @app.route("/home")
 def home():

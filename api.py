@@ -11,6 +11,7 @@ api = Api(app)
 
 
 #natalka
+
 # Spotify API credentials and settings
 CLIENT_ID = "8dd947abb4a341f3a58073753636b4bf"
 CLIENT_SECRET = "8c12a131e8964aa8874bc0f5fe4560e8"
