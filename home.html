@@ -77,31 +77,30 @@
       position: relative;
     }
     
-
-  .button {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    position: absolute;
-    transition: transform 0.3s ease;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex; /* Dodano, aby centrować obraz w przycisku */
-    align-items: center; /* Dodano, aby centrować obraz w przycisku */
-    justify-content: center; /* Dodano, aby centrować obraz w przycisku */
-  }
-  .button:hover {
-        transform: scale(1.1);
-      }
-  .button img {
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-  }
+    .button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: absolute;
+      transition: transform 0.3s ease;
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .button:hover {
+      transform: scale(1.1);
+    }
+    .button img {
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
 
     .button:hover::after {
       content: attr(data-item);
@@ -144,6 +143,29 @@
       align-items: center;
       gap: 10px;
     }
+    .add-button {
+      display: block;
+      margin: 20px auto;
+      padding: 15px 120px;
+      background-color: #1db954;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+      font-weight: 500;
+      border: none;
+      font-size: 16px;
+      box-sizing: border-box;
+      width: 300px;
+      height: 70px; /* Increased height */
+      box-sizing: border-box;
+    }
+    .add-button:hover {
+      background-color: #1ed760;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -179,21 +201,19 @@
       {% endfor %}
     </div>
 
-    <ul class="list">
-      <h3>Recommended Tracks</h3>
-      {% for item in recommendations %}
-        <li>{{ item[0] }} Author: {{ item[1]}} Uri {{item[2]}}</li>
-      {% endfor %}
-    </ul>
-    <form action="{{ url_for('add_to_playlist') }}" method="post">
-      <input type="hidden" name="tracks" value="{{ recommendations }}">
-      <button type="submit">Add Recommended Tracks to Playlist</button>
-    </form>
-    
-</div>
-
-
-   
+    <div>
+      <ul class="list">
+        <h3>Recommended Tracks</h3>
+        {% for item in recommendations %}
+          <li>{{ item[0] }} Author: {{ item[1] }}</li>
+        {% endfor %}
+      </ul>
+      <form action="{{ url_for('add_to_playlist') }}" method="post">
+        <input type="hidden" name="tracks" value="{{ recommendations }}">
+        <button type="submit" class="add-button">Add Recommended Tracks to Playlist</button>
+      </form>
+    </div>
+  </div>
 
   <script src="static/scripts/script.js"></script>
 </body>

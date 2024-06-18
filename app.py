@@ -1,7 +1,8 @@
-from flask import Flask, render_template, redirect, request, url_for, session, flash
+from flask import Flask, render_template, redirect, request, url_for, session, flash, jsonify
 import spotipy
 import spotipy.oauth2 as oauth2
 import os
+import re
 
 app = Flask(__name__)
 app.secret_key = '8c12a131e8964aa8874bc0f5fe4560e8'  # Replace with a secret key for session management
@@ -52,22 +53,26 @@ def add_to_playlist():
     token = get_token()
     if not token:
         return redirect(url_for('login'))
-
     sp = spotipy.Spotify(auth=token)
     tracks = request.form.getlist('tracks')
+    
+    tracks[0] = tracks[0].replace("'", "")
+
+
+    pattern = re.compile(r'\(([^,]+), ([^,]+), ([^\)]+)\)')
+    fixed_tracks = pattern.findall(tracks[0])
+
+
+    uri_list = [elem[2] for elem in  fixed_tracks]
 
     user_id = sp.current_user()['id']
     playlist_name = 'My New Playlist'
     playlist_description = 'This is a new playlist created using Spotipy'
     playlist = sp.user_playlist_create(user=user_id, name=playlist_name, public=True, description=playlist_description)
+ 
+    playlist_id = playlist['id']
     
-    # Przykład: dodanie utworów do playlisty
-    playlist_id = playlist['id']  # Zastąp tym ID swojej playlisty na Spotify
-     # Przetwórz listę tupli na listę URI
-    track_uris = [track[2] for track in tracks]
-    for track in track_uris:
-        print(track)
-    sp.playlist_add_items(playlist_id, track_uris)
+    sp.playlist_add_items(playlist_id, uri_list)
 
     flash('Tracks added to playlist successfully!', 'success')
     return redirect(url_for('home'))
