@@ -17,6 +17,10 @@
     {
       "name": "User Information",
       "description": "Endpoints for retrieving user-specific information from Spotify."
+    },
+    {
+      "name": "User Media",
+      "description": "Endpoints for retrieving user media information from Spotify."
     }
   ],
   "paths": {
@@ -31,15 +35,9 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "object"
-            }
-          },
-          "400": {
-            "description": "Bad Request. Invalid request parameters.",
-            "schema": {
               "type": "object",
               "properties": {
-                "error": {
+                "access_token": {
                   "type": "string"
                 }
               }
@@ -73,17 +71,6 @@
               "type": "object",
               "properties": {
                 "message": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized. Authentication required.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
                   "type": "string"
                 }
               }
@@ -128,17 +115,6 @@
               }
             }
           },
-          "404": {
-            "description": "Not Found. The specified resource was not found.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal Server Error. Something went wrong on the server.",
             "schema": {
@@ -164,7 +140,12 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "object"
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                }
+              }
             }
           },
           "401": {
@@ -207,7 +188,7 @@
       "get": {
         "summary": "Get user favorite artists from Spotify",
         "tags": [
-          "User media"
+          "User Media"
         ],
         "description": "Retrieve the favorite artists for the authenticated user from Spotify.",
         "parameters": [
@@ -220,9 +201,9 @@
             "format": "int32"
           },
           {
-            "name": "scope",
+            "name": "time_range",
             "in": "query",
-            "description": "Scope of artists to return",
+            "description": "Time range to return (e.g., short_term, medium_term, long_term)",
             "required": false,
             "type": "string"
           }
@@ -285,7 +266,7 @@
       "get": {
         "summary": "Get user favorite songs from Spotify",
         "tags": [
-          "User media"
+          "User Media"
         ],
         "description": "Retrieve the favorite songs for the authenticated user from Spotify.",
         "parameters": [
@@ -298,9 +279,9 @@
             "format": "int32"
           },
           {
-            "name": "scope",
+            "name": "time_range",
             "in": "query",
-            "description": "Scope of songs to return",
+            "description": "Time range to return (e.g., short_term, medium_term, long_term)",
             "required": false,
             "type": "string"
           }
@@ -363,7 +344,7 @@
       "get": {
         "summary": "Get song recommendations from Spotify",
         "tags": [
-          "User media"
+          "User Media"
         ],
         "description": "Retrieve song recommendations for the authenticated user from Spotify.",
         "parameters": [
@@ -402,6 +383,9 @@
                     "type": "string"
                   },
                   "artist": {
+                    "type": "string"
+                  },
+                  "uri": {
                     "type": "string"
                   }
                 }
@@ -443,6 +427,131 @@
           }
         }
       }
+    },
+    "/api/ReceiveToken": {
+      "put": {
+        "summary": "Receive token",
+        "tags": [
+          "Authentication and Token Management"
+        ],
+        "description": "Receive and store the Spotify access token.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Token to store in the database",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token received successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Invalid request parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. Something went wrong on the server.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/add_to_playlist": {
+  "post": {
+    "summary": "Add songs to a new playlist",
+    "tags": [
+      "User Media"
+    ],
+    "description": "Create a new playlist and add provided songs to it.",
+    "parameters": [
+      {
+        "name": "tracks",
+        "in": "body",
+        "description": "List of track URIs to add to the playlist",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "tracks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Songs added successfully",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "Songs added successfully!"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request. Invalid request parameters.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "No tracks provided"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error. Something went wrong on the server.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "Failed to create playlist"
+            }
+          }
+        }
+      }
     }
   }
 }
+  }
+}
+

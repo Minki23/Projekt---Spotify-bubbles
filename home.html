@@ -44,6 +44,7 @@
       {% endfor %}
     </div>
 
+<<<<<<< Updated upstream
     <ul class="list">
       <h3>Recommended Tracks</h3>
       {% for item in recommendations %}
@@ -54,6 +55,20 @@
       <input type="hidden" name="tracks" value="{{ recommendations }}">
       <button type="submit" class="add-button">Add Recommended Tracks to Playlist</button>
     </form>
+=======
+    <div>
+      <ul class="list">
+        <h3>Recommended Tracks</h3>
+        {% for item in recommendations %}
+          <li>{{ item[0] }} Author: {{ item[1] }}</li>
+        {% endfor %}
+      </ul>
+      <form action="{{ url_for('add_to_playlist') }}" method="post">
+        <input type="hidden" name="tracks" value="{{ recommendations }}">
+        <button type="submit" class="add-button">Add Recommended Tracks to Playlist</button>
+      </form>
+    </div>
+>>>>>>> Stashed changes
   </div>
 </div>
 

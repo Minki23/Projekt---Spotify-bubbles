@@ -15,12 +15,12 @@ api = Api(app)
 
 #natalka
 # Spotify API credentials and settings
-CLIENT_ID = "8dd947abb4a341f3a58073753636b4bf"
-CLIENT_SECRET = "8c12a131e8964aa8874bc0f5fe4560e8"
+# CLIENT_ID = "8dd947abb4a341f3a58073753636b4bf"
+# CLIENT_SECRET = "8c12a131e8964aa8874bc0f5fe4560e8"
 
 #minki
-# CLIENT_ID = '0689d1156c404b359ed3edd8c943df3e'
-# CLIENT_SECRET = '43d103e7338d4f8ebe3a6b89e04ccda7'
+CLIENT_ID = '0689d1156c404b359ed3edd8c943df3e'
+CLIENT_SECRET = '43d103e7338d4f8ebe3a6b89e04ccda7'
 REDIRECT_URI = 'http://localhost:5500/'
 SCOPE = 'user-top-read user-library-modify playlist-modify-public playlist-modify-private user-read-private user-read-email'
 
@@ -307,3 +307,4 @@ api.add_resource(CreatePlaylist, '/api/add_to_playlist')
 # Run the Flask application
 if __name__ == '__main__':
     app.run(port=8888, debug=True, host='127.0.0.1')
+

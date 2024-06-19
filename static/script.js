@@ -65,7 +65,7 @@ class Button{
           }
         }
         });
-    }, 3);
+    }, 1);
   }
 }
 const buttons = document.querySelectorAll('.orb');
