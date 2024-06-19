@@ -3,7 +3,7 @@
   "info": {
     "title": "Spotify Flask API",
     "description": "API documentation for Spotify integration with Flask",
-    "version": "6.9.2137"
+    "version": "1.0.1"
   },
   "basePath": "/",
   "schemes": [
