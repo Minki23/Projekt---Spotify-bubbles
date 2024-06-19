@@ -40,7 +40,7 @@ sp_oauth = oauth2.SpotifyOAuth(
     cache_path=os.path.join(cache_path, 'spotify_cache'),
     show_dialog=True
 )
-
+#Receive cached token, refresh when expired
 def get_token():
     """
     Retrieves the current access token from session or refreshes it if expired.

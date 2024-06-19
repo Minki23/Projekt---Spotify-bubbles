@@ -24,7 +24,7 @@ body {
   width: fit-content;
   aspect-ratio: 2;
   cursor: pointer;
-  background-color: #12873b;
+  background-color: #1db954;
   color: rgb(255, 255, 255);
   font-weight: 500;
   font-size: 20px;
@@ -37,7 +37,7 @@ body {
   padding-right: 10px;
 }
 .logout:hover {
-  background-color: #1cc658;
+  background-color: #1ed760;
 }
 .content {
   display: flex;
@@ -74,7 +74,7 @@ body {
   flex-direction: column;
 }
 .submit-button {
-  background-color: #12873b;
+  background-color: #1db954;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +91,7 @@ body {
   margin: .5rem;
 }
 .submit-button:hover {
-  background-color: #1cc658;
+  background-color: #1ed760;
 }
 .cube {
   display: flex;
@@ -144,8 +144,8 @@ padding: 10px;
 border-radius: 5px;
 white-space: nowrap;
 pointer-events: none;
-z-index: 3;
 }
+
 .list {
 width: 20vw;
 max-height: 50vh;
