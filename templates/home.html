@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spotify Bubbles!!!!</title>
-  <link rel="icon" type="image/png" href="/static/icon.png">
-  <link rel="stylesheet" href="/static/mainStyles.css">
+  <link rel="icon" type="image/png" href="/static/icons/icon.png">
+  <link rel="stylesheet" href="/static/styles/mainStyles.css">
 </head>
 <body>
   <button class="logout" onclick="logout()"><img class="profile_pic" src="{{ profile_pic['url'] }}">Logout</button>
@@ -60,8 +60,8 @@
   </div>
 </div>
 
-  <script src="/static/script.js"></script>
-  <script src="/static/login.js"></script>
+  <script src="/static/scripts/script.js"></script>
+  <script src="/static/scripts/login.js"></script>
   <script>
     async function logout() {
       data = await fetchData("http://127.0.0.1:8888/api/Logout");

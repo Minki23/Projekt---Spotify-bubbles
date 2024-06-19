@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Bubbles Login!!!</title>
     <link rel="icon" type="image/png" href="/static/icon.png">
-    <link rel="stylesheet" href="/static/login_styles.css">
+    <link rel="stylesheet" href="/static/styles/login_styles.css">
 </head>
 <body>
-    <h1 class="logo-container"><img class="logo" src="/static/icon.png"> Spotify Bubbles </h1>
+    <h1 class="logo-container"><img class="logo" src="/static/icons/icon.png"> Spotify Bubbles </h1>
     <button class="login" onclick="login()"> Login to Spotify</button>
     <footer class="footer">Created by: <a target=”_blank” href="https://github.com/nataliaidk">Natalia Marszałek</a> & <a target=”_blank” href="https://github.com/Minki23">Michał Szymczak</a></footer>
 </body>
-<script src="/static/login.js"></script>
+<script src="/static/scripts/login.js"></script>
 <script>
 async function login() {
     data = await fetchData("{{login_url}}");
